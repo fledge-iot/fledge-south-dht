@@ -8,11 +8,9 @@ The DHT C/C++ module uses libwiringPi. To install that:
 
 .. code-block:: console
 
-        $ git clone git://git.drogon.net/wiringPi
-
-        $ cd wiringPi
-
-        $ ./build
+   $ git clone git://git.drogon.net/wiringPi
+   $ cd wiringPi
+   $ ./build
 
 The wiringPi library and related symbolic link would get installed in /usr/local/lib.
 

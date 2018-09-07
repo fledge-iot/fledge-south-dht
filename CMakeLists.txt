@@ -33,6 +33,7 @@ if (NOT WiringPi)
 			    " # ./build\n")
 	return()
 endif()
+
 # Find FogLAMP includes and libs, by including FindFogLAMP.cmak file
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} ${CMAKE_CURRENT_SOURCE_DIR})
 find_package(FogLAMP)
@@ -52,10 +53,6 @@ include_directories(include)
 # Add FogLAMP include dir(s)
 include_directories(${FOGLAMP_INCLUDE_DIRS})
 # Add other include paths
-if (FOGLAMP_SRC)
-	message(STATUS "Using third-party includes " ${FOGLAMP_SRC}/C/thirdparty)
-	include_directories(${FOGLAMP_SRC}/C/thirdparty/rapidjson/include)
-endif()
 
 # Add FogLAMP lib path
 link_directories(${FOGLAMP_LIB_DIRS})

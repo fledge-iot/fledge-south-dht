@@ -25,63 +25,53 @@ architecture="none"
 plugin_type="south"
 plugin_name="dht"
 plugin_install_dirname="dht"
-usage="$(basename "$0") {x86|arm} [help|clean|cleanall]
+usage="$(basename "$0") [help|clean|cleanall]
 This script is used to create the Debian package of FoglAMP C++ '${plugin_name}' ${plugin_type} plugin
 Arguments:
  help     - Display this help text
- x86      - Build an x86_64 package
- arm      - Build an armv7l package
  clean    - Remove all the old versions saved in format .XXXX
  cleanall - Remove all the versions, including the last one"
 
 GIT_ROOT=`pwd`    # The script must be executed from the root git directory
-if [ $# -gt 0 ]; then
-    for i in "$@"
-    do
-        case "$i" in
-          x86)
-              architecture="x86_64"
-              shift
-              ;;
-          arm)
-              architecture="armhf"
-              shift
-              ;;
-          clean)
-              echo -n "Cleaning the build folder from older versions..."
-              find "${GIT_ROOT}/packages/build" -maxdepth 1 | grep '.*\.[0-9][0-9][0-9][0-9]' | xargs rm -rf
+
+for i in "$@"
+do
+    case "$i" in
+      clean)
+          echo -n "Cleaning the build folder from older versions..."
+          find "${GIT_ROOT}/packages/build" -maxdepth 1 | grep '.*\.[0-9][0-9][0-9][0-9]' | xargs rm -rf
+          echo "Done."
+          exit 0
+          ;;
+      cleanall)
+          if [ -d "${GIT_ROOT}/packages/build" ]; then
+              echo -n "Cleaning the build folder..."
+              rm -rf ${GIT_ROOT}/packages/build/*
               echo "Done."
-              shift
-              ;;
-          cleanall)
-              if [ -d "${GIT_ROOT}/packages/build" ]; then
-                  echo -n "Cleaning the build folder..."
-                  rm -rf ${GIT_ROOT}/packages/build/*
-                  echo "Done."
-              else
-                  echo "No build folder, skipping cleanall"
-              fi
-              shift
-              ;;
-          help)
-              echo "${usage}"
-              exit 0
-              ;;
-          *)
-              echo "Unrecognized option: $i"
-             exit 1
-            ;;
-      esac
-    done
-else
-  echo "See help and select the architecture to use, *x86* or *arm*"
-  exit 1
-fi
+          else
+              echo "No build folder, skipping cleanall"
+          fi
+          exit 0
+          ;;
+      help)
+          echo "${usage}"
+          exit 0
+          ;;
+      *)
+          echo "Unrecognized option: $i"
+         exit 1
+        ;;
+  esac
+done
+
 
 # If the architecture has not been defined, then the script is complete
-if [[ "$architecture" == "none" ]]; then
-  exit 0
+if [ "$(dpkg --print-architecture)" != "armhf" ]; then
+	echo "Package building is only supported on arm* architecture!!"
+	exit 0
 fi
+
+architecture="armhf"
 
 # Get plugin version from plugin.cpp, grep comment: // Version
 plugin_version=`cat ${GIT_ROOT}/plugin.cpp | grep 'Version' | head -1 | tr -d ' ' | awk -F',' '{print $1}' | sed -e 's/\"//g' | sed -e 's/[[:space:]]\+//g'`
@@ -108,12 +98,37 @@ if [ ! -L "${BUILD_ROOT}" -a ! -d "${BUILD_ROOT}" ]; then
     mkdir -p "${BUILD_ROOT}"
 fi
 
-# Checl plugin has been built
+# Check plugin has been built
 if [ ! -d "${GIT_ROOT}/build" ]; then
-    echo "Error: ./build directory not found."
-    echo "Build plugin ${plugin_name} first."
-    echo "mkdir ./build; cd ./build; cmake ..; make; cd .."
-    exit 1
+    echo "Warning: ./build directory not found."
+    echo "Building plugin ${plugin_name} first."
+    # Check FOGLAMP_ROOT
+    if [ -z ${FOGLAMP_ROOT+x} ]; then
+        # Set FOGLAMP_ROOT as the default directory
+        FOGLAMP_ROOT="/usr/local/foglamp"
+        export FOGLAMP_ROOT
+    fi
+
+    # Check if the default directory exists
+    if [[ ! -d "${FOGLAMP_ROOT}" ]]; then
+        logger -p local0.err -t "foglamp.script.foglamp" "FogLAMP cannot be executed: ${FOGLAMP_ROOT} is not a valid directory."
+        echo "FogLAMP cannot be executed: ${FOGLAMP_ROOT} is not a valid directory."
+        echo "Create the enviroment variable FOGLAMP_ROOT before using FogLAMP."
+        echo "Specify the base directory for FogLAMP and set the variable with:"
+        echo "export FOGLAMP_ROOT=<basedir>"
+        exit 1
+    fi
+
+    # Check/set LD_LIBRARY_PATH
+    libPathSet=0
+    libdir=${FOGLAMP_ROOT}/lib; [ -d ${libdir} ] && LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|${libdir}||g") && export LD_LIBRARY_PATH=${libdir}:${LD_LIBRARY_PATH} && libPathSet=1
+    libdir=${FOGLAMP_ROOT}/cmake_build/C/lib; [ -d ${libdir} ] && LD_LIBRARY_PATH=$(echo $LD_LIBRARY_PATH | sed "s|${libdir}||g") && export LD_LIBRARY_PATH=${libdir}:${LD_LIBRARY_PATH} && libPathSet=1
+    [ "$libPathSet" -eq "0" ] && echo "Unable to set/update LD_LIBRARY_PATH to include path of Foglamp shared libraries: check whether ${FOGLAMP_ROOT}/lib or ${FOGLAMP_ROOT}/cmake_build/C/lib exists" && exit 1
+
+    # Build wiringpi first
+    cd /tmp; git clone git://git.drogon.net/wiringPi; cd wiringPi; ./build; cd ${GIT_ROOT}
+    mkdir ./build; cd ./build; cmake ..; make; cd ..
+    #exit 1
 fi
 
 cd "${BUILD_ROOT}"
@@ -130,7 +145,7 @@ mkdir "${package_name}"
 # First with files common to all pla
 echo -n "Populating the package and updating version file..."
 cd "${package_name}"
-cp -R ${GIT_ROOT}/packages/Debian/common/* .
+# cp -R ${GIT_ROOT}/packages/Debian/common/* .
 cp -R ${GIT_ROOT}/packages/Debian/${architecture}/* .
 sed -i "s/Version: 1.0.0/Version: ${plugin_version}/g" DEBIAN/control
 sed -i "s/Depends: foglamp/Depends: foglamp (${foglamp_version})/g" DEBIAN/control
@@ -139,6 +154,12 @@ mkdir -p usr/local/foglamp
 cd usr/local/foglamp
 mkdir -p "plugins/${plugin_type}/${plugin_install_dirname}"
 cp -R --preserve=links ${GIT_ROOT}/build/lib*.so* "plugins/${plugin_type}/${plugin_install_dirname}"
+
+# If you want to package libwiringPi with plugin debian
+# mkdir -p ../../../usr/local/lib
+# cd ../../../usr/local/lib
+# cp -R --preserve=links /usr/local/lib/libwiringPi*.so* .
+
 echo "Done."
 
 # Build the package

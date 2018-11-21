@@ -18,6 +18,7 @@ class DHT11 {
 		DHT11(unsigned int pin);
 		~DHT11();
 		void            setAssetName(const std::string& assetName) { m_assetName = assetName; };
+		void		setPin(unsigned int pin);
 		std::string 	getAssetName() { return m_assetName; };
 		Reading		takeReading(bool firstReading=false);
 	private:

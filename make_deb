@@ -21,7 +21,6 @@
 
 set -e
 
-architecture="none"
 plugin_type="south"
 plugin_name="dht"
 plugin_install_dirname="dht"

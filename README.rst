@@ -107,12 +107,12 @@ Finally, run the ``make_deb`` command:
    The package root directory is   : /home/ubuntu/source/foglamp-south-dht
    The FogLAMP required version    : >=1.4
    The package will be built in    : /home/ubuntu/source/foglamp-south-dht/packages/build
-   The architecture is set as      : x86_64
-   The package name is             : foglamp-south-dht-1.0.0-x86_64
+   The architecture is set as      : armhf
+   The package name is             : foglamp-south-dht-1.0.0-armhf
 
    Populating the package and updating version file...Done.
    Building the new package...
-   dpkg-deb: building package 'foglamp-south-dht' in 'foglamp-south-dht-1.0.0-x86_64.deb'.
+   dpkg-deb: building package 'foglamp-south-dht' in 'foglamp-south-dht-1.0.0-armhf.deb'.
    Building Complete.
    $
 

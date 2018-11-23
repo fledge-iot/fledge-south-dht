@@ -146,3 +146,12 @@ Reading DHT11::takeReading(bool firstReading)
 	return Reading(m_assetName, vec);
 }
 
+/**
+ * Update the pin to which the DHT11 is connected.
+ *
+ * @param pin	The new pin to use to read the DHT11 data from
+ */
+void DHT11::setPin(unsigned int pin)
+{
+	m_pin = pin;
+}

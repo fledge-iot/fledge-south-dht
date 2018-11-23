@@ -95,6 +95,16 @@ Reading plugin_poll(PLUGIN_HANDLE *handle)
  */
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
+ConfigCategory	conf("dht", newConfig);
+DHT11 		*dht11 = (DHT11*)handle;
+
+	if (conf.itemExists("asset"))
+                dht11->setAssetName(conf.getValue("asset"));
+	if (conf.itemExists("pin"))
+        {
+                unsigned int pin = stoul(conf.getValue("pin"), nullptr, 0);
+		dht11->setPin(pin);
+        }
 }
 
 /**

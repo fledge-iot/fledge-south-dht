@@ -83,17 +83,15 @@ This repo contains the scripts used to create a foglamp-south-dht Debian package
 The make_deb script
 ===================
 
-Run the make_deb command after compiling the plugin:
+Run the make_deb command:
 
 .. code-block:: console
 
   $ ./make_deb help
-  make_deb {x86|arm} [help|clean|cleanall]
+  make_deb [help|clean|cleanall]
   This script is used to create the Debian package of FoglAMP C++ 'dht' south plugin
   Arguments:
    help     - Display this help text
-   x86      - Build an x86_64 package
-   arm      - Build an armv7l package
    clean    - Remove all the old versions saved in format .XXXX
    cleanall - Remove all the versions, including the last one
   $
@@ -109,12 +107,12 @@ Finally, run the ``make_deb`` command:
    The package root directory is   : /home/ubuntu/source/foglamp-south-dht
    The FogLAMP required version    : >=1.4
    The package will be built in    : /home/ubuntu/source/foglamp-south-dht/packages/build
-   The architecture is set as      : x86_64
-   The package name is             : foglamp-south-dht-1.0.0-x86_64
+   The architecture is set as      : armhf
+   The package name is             : foglamp-south-dht-1.0.0-armhf
 
    Populating the package and updating version file...Done.
    Building the new package...
-   dpkg-deb: building package 'foglamp-south-dht' in 'foglamp-south-dht-1.0.0-x86_64.deb'.
+   dpkg-deb: building package 'foglamp-south-dht' in 'foglamp-south-dht-1.0.0-armhf.deb'.
    Building Complete.
    $
 

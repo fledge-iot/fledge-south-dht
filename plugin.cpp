@@ -26,9 +26,11 @@ using namespace std;
 #define CONFIG  "{\"plugin\" : { \"description\" : \"DHT11 C south plugin\", " \
                         "\"type\" : \"string\", \"default\" : \"dht11\", \"readonly\": \"true\" }, " \
                 "\"asset\" : { \"description\" : \"Asset name\", "\
-                        "\"type\" : \"string\", \"default\" : \"dht11\" }, " \
-                "\"pin\" : { \"description\" : \"RPi pin to which DHT11 is attached\", " \
-                        "\"type\" : \"integer\", \"default\" : \"7\" } "\
+                        "\"type\" : \"string\", \"default\" : \"dht11\", \"order\": \"1\", " \
+                        "\"displayName\": \"Asset Name\" }, " \
+                "\"pin\" : { \"description\" : \"Rpi pin to which DHT11 is attached\", " \
+                        "\"type\" : \"integer\", \"default\" : \"7\", " \
+                        "\"displayName\": \"Rpi Pin\" } "\
                 "}"
 
 

@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 2.4.0)
 
 # Set the plugin name to build
-project(dht)
+project(dht11)
 
 # Supported options:
 # -DFOGLAMP_INCLUDE
@@ -13,6 +13,17 @@ project(dht)
 # then FogLAMP libraries and header files are pulled from FOGLAMP_ROOT path.
 
 set(CMAKE_CXX_FLAGS "-std=c++11 -O3")
+
+# Generation version header file
+set_source_files_properties(version.h PROPERTIES GENERATED TRUE)
+add_custom_command(
+  OUTPUT version.h
+  DEPENDS ${CMAKE_SOURCE_DIR}/VERSION
+  COMMAND ${CMAKE_SOURCE_DIR}/mkversion ${CMAKE_SOURCE_DIR}
+  COMMENT "Generating version header"
+  VERBATIM
+)
+include_directories(${CMAKE_BINARY_DIR})
 
 # Set plugin type (south, north, filter)
 set(PLUGIN_TYPE "south")
@@ -58,7 +69,7 @@ include_directories(${FOGLAMP_INCLUDE_DIRS})
 link_directories(${FOGLAMP_LIB_DIRS})
 
 # Create shared library
-add_library(${PROJECT_NAME} SHARED ${SOURCES})
+add_library(${PROJECT_NAME} SHARED ${SOURCES} version.h)
 # Add FogLAMP library names
 target_link_libraries(${PROJECT_NAME} ${NEEDED_FOGLAMP_LIBS})
 # Add additional libraries

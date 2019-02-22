@@ -17,6 +17,7 @@
 #include <plugin_exception.h>
 #include <config_category.h>
 #include <rapidjson/document.h>
+#include <version.h>
 
 using namespace std;
 
@@ -24,11 +25,13 @@ using namespace std;
  * Default configuration
  */
 #define CONFIG  "{\"plugin\" : { \"description\" : \"DHT11 C south plugin\", " \
-                        "\"type\" : \"string\", \"default\" : \"foglamp-dht11\" }, " \
+                        "\"type\" : \"string\", \"default\" : \"dht11\", \"readonly\": \"true\" }, " \
                 "\"asset\" : { \"description\" : \"Asset name\", "\
-                        "\"type\" : \"string\", \"default\" : \"dht11\" }, " \
-                "\"pin\" : { \"description\" : \"RPi pin to which DHT11 is attached\", " \
-                        "\"type\" : \"integer\", \"default\" : \"7\" } "\
+                        "\"type\" : \"string\", \"default\" : \"dht11\", \"order\": \"1\", " \
+                        "\"displayName\": \"Asset Name\" }, " \
+                "\"pin\" : { \"description\" : \"Rpi pin to which DHT11 is attached\", " \
+                        "\"type\" : \"integer\", \"default\" : \"7\", " \
+                        "\"displayName\": \"Rpi Pin\" } "\
                 "}"
 
 
@@ -42,7 +45,7 @@ extern "C" {
  */
 static PLUGIN_INFORMATION info = {
 	"DHT11",                  // Name
-	"1.0.0",                  // Version
+	VERSION,                  // Version
 	0,    			  // Flags
 	PLUGIN_TYPE_SOUTH,        // Type
 	"1.0.0",                  // Interface version
@@ -95,6 +98,16 @@ Reading plugin_poll(PLUGIN_HANDLE *handle)
  */
 void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
+ConfigCategory	conf("dht", newConfig);
+DHT11 		*dht11 = (DHT11*)*handle;
+
+	if (conf.itemExists("asset"))
+                dht11->setAssetName(conf.getValue("asset"));
+	if (conf.itemExists("pin"))
+        {
+                unsigned int pin = stoul(conf.getValue("pin"), nullptr, 0);
+		dht11->setPin(pin);
+        }
 }
 
 /**

@@ -28,7 +28,7 @@
 set -e
 
 set_files_ownership () {
-    chown -R root:root /usr/local/foglamp/plugins/south/dht
+    chown -R root:root /usr/local/foglamp/plugins/south/dht11_V2
 }
 
 set_files_ownership

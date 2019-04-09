@@ -1,7 +1,7 @@
-#!/bin/sh
+#!/usr/bin/env bash
 
 ##--------------------------------------------------------------------
-## Copyright (c) 2018 Dianomic Systems
+## Copyright (c) 2019 Dianomic Systems
 ##
 ## Licensed under the Apache License, Version 2.0 (the "License");
 ## you may not use this file except in compliance with the License.
@@ -16,19 +16,10 @@
 ## limitations under the License.
 ##--------------------------------------------------------------------
 
-##--------------------------------------------------------------------
 ##
-## @postinst DEBIAN/postinst
-## This script is used to execute post installation tasks.
+## Author: Ashish Jabble
 ##
-## Author: Massimiliano Pinto
-##
-##--------------------------------------------------------------------
 
 set -e
 
-set_files_ownership () {
-    chown -R root:root /usr/local/foglamp/plugins/south/dht
-}
-
-set_files_ownership
+sudo apt install -y wiringpi

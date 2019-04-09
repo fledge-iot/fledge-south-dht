@@ -2,17 +2,16 @@
 DHT C/C++ South plugin for Raspberry Pi
 =========================================
 
-NOTE:
+Installation
+------------
 
-The DHT C/C++ module uses libwiringPi. To install that:
+The plugin can be installed with given `requirements.sh <requirements.sh>`_ or with below manual steps:
+
 
 .. code-block:: console
 
-   $ git clone git://git.drogon.net/wiringPi
-   $ cd wiringPi
-   $ ./build
+   $ sudo apt install -y wiringpi
 
-The wiringPi library and related symbolic link would get installed in /usr/local/lib.
 
 Build
 -----

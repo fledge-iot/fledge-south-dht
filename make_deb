@@ -23,7 +23,7 @@ set -e
 
 plugin_type="south"
 plugin_name="dht"
-plugin_install_dirname="dht"
+plugin_install_dirname="dht11_V2"
 usage="$(basename "$0") [help|clean|cleanall]
 This script is used to create the Debian package of FoglAMP C++ '${plugin_name}' ${plugin_type} plugin
 Arguments:
@@ -116,7 +116,8 @@ libdir=${FOGLAMP_ROOT}/cmake_build/C/lib; [ -d ${libdir} ] && LD_LIBRARY_PATH=$(
 [ "$libPathSet" -eq "0" ] && echo "Unable to set/update LD_LIBRARY_PATH to include path of Foglamp shared libraries: check whether ${FOGLAMP_ROOT}/lib or ${FOGLAMP_ROOT}/cmake_build/C/lib exists" && exit 1
 
 # Build wiringpi first
-cd /tmp; rm -rf wiringPi; git clone git://git.drogon.net/wiringPi; cd wiringPi; ./build; cd ${GIT_ROOT}
+./requirements.sh
+cd ${GIT_ROOT}
 rm -rf build; mkdir ./build; cd ./build; cmake ..; make; cd ..
 
 

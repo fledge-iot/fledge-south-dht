@@ -16,6 +16,7 @@ case "$arch" in
 		exit 1
 		;;
 	armhf)
+		requirements="${requirements} wiringpi"
 		;;
 	aarch64)
 		;;

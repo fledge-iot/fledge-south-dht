@@ -65,7 +65,7 @@ done
 
 
 architecture="$(dpkg --print-architecture)"
-case "${architecture"} in
+case "${architecture}" in
 	armhf)
 		;;
 	arm64)

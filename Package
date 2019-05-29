@@ -3,6 +3,7 @@
 plugin_name=dht11_V2
 plugin_type=south
 plugin_install_dirname=${plugin_name}
+plugin_package_name=foglamp-${plugin_type}-dht11V2
 
 # Now build up the runtime requirements list. This has 3 components
 #   1. Generic packages we depend on in all architectures and package managers
@@ -15,8 +16,8 @@ case "$arch" in
 		echo "${plugin_name} is not supported on Intel architectures as it requires ARM GPIO support"
 		exit 1
 		;;
-	armhf)
-		requirements="${requirements} wiringpi"
+	armv7l)
+		requirements="${requirements},wiringpi"
 		;;
 	aarch64)
 		;;

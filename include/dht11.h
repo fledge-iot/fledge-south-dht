@@ -1,7 +1,7 @@
 #ifndef _DHT11_H
 #define _DHT11_H
 /*
- * FogLAMP south service plugin
+ * Fledge south service plugin
  *
  * Copyright (c) 2018 OSIsoft, LLC
  *

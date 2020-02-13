@@ -29,7 +29,7 @@ using namespace std;
                         "\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\": \"true\" }, " \
                 "\"asset\" : { \"description\" : \"Asset name\", "\
                         "\"type\" : \"string\", \"default\" : \"dht11\", \"order\": \"1\", " \
-                        "\"displayName\": \"Asset Name\" }, " \
+                        "\"displayName\": \"Asset Name\" ,\"mandatory\" : \"true\"}, " \
                 "\"pin\" : { \"description\" : \"Rpi pin to which DHT11 is attached\", " \
                         "\"type\" : \"integer\", \"default\" : \"7\", " \
                         "\"displayName\": \"Rpi Pin\" } "\

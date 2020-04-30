@@ -28,7 +28,7 @@ using namespace std;
 const static char *default_config = QUOTE({
 		"plugin" : { 
 			"description" : "DHT11 C south plugin",
-                        "type" : "string",
+			"type" : "string",
 			"default" : PLUGIN_NAME,
 			"readonly": "true"
 			},
@@ -42,7 +42,7 @@ const static char *default_config = QUOTE({
 			},
                 "pin" : {
 			"description" : "Rpi pin to which DHT11 is attached",
-                        "type" : "integer",
+			"type" : "integer",
 			"default" : "7",
                         "displayName": "Rpi Pin"
 		       	}

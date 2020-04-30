@@ -4,7 +4,7 @@
 .. Links
 .. |plugin_development| raw:: html
 
-   <a href="../../plugin_developers_guide/03_south_plugins.html">plugin development</a>
+   <a href="../../plugin_developers_guide/03_south_C_plugins.html">plugin development</a>
 
 .. |python_version| raw:: html
 

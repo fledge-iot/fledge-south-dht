@@ -25,15 +25,28 @@ using namespace std;
 /**
  * Default configuration
  */
-#define CONFIG  "{\"plugin\" : { \"description\" : \"DHT11 C south plugin\", " \
-                        "\"type\" : \"string\", \"default\" : \"" PLUGIN_NAME "\", \"readonly\": \"true\" }, " \
-                "\"asset\" : { \"description\" : \"Asset name\", "\
-                        "\"type\" : \"string\", \"default\" : \"dht11\", \"order\": \"1\", " \
-                        "\"displayName\": \"Asset Name\" }, " \
-                "\"pin\" : { \"description\" : \"Rpi pin to which DHT11 is attached\", " \
-                        "\"type\" : \"integer\", \"default\" : \"7\", " \
-                        "\"displayName\": \"Rpi Pin\" } "\
-                "}"
+const static char *default_config = QUOTE({
+		"plugin" : { 
+			"description" : "DHT11 C south plugin",
+			"type" : "string",
+			"default" : PLUGIN_NAME,
+			"readonly": "true"
+			},
+                "asset" : {
+	       		"description" : "Asset name",
+                        "type" : "string",
+			"default" : "dht11",
+			"order": "1",
+                        "displayName": "Asset Name",
+			"mandatory" : "true"
+			},
+                "pin" : {
+			"description" : "Rpi pin to which DHT11 is attached",
+			"type" : "integer",
+			"default" : "7",
+                        "displayName": "Rpi Pin"
+		       	}
+                });
 
 
 /**
@@ -47,10 +60,10 @@ extern "C" {
 static PLUGIN_INFORMATION info = {
 	PLUGIN_NAME,              // Name
 	VERSION,                  // Version
-	0,    			          // Flags
+	0,    		          // Flags
 	PLUGIN_TYPE_SOUTH,        // Type
 	"1.0.0",                  // Interface version
-	CONFIG                    // Default configuration
+	default_config            // Default configuration
 };
 
 /**

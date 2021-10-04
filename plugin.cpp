@@ -25,7 +25,7 @@ using namespace std;
 /**
  * Default configuration
  */
-const static char *default_config = QUOTE({
+static const char *default_config = QUOTE({
 		"plugin" : { 
 			"description" : "DHT11 C south plugin",
 			"type" : "string",

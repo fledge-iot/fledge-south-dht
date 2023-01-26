@@ -110,10 +110,10 @@ Reading plugin_poll(PLUGIN_HANDLE handle)
 /**
  * Reconfigure the plugin
  */
-void plugin_reconfigure(PLUGIN_HANDLE handle, string& newConfig)
+void plugin_reconfigure(PLUGIN_HANDLE *handle, string& newConfig)
 {
 	ConfigCategory conf("dht", newConfig);
-	DHT11 *dht11 = static_cast<DHT11*>(handle);
+	DHT11 *dht11 = static_cast<DHT11*>(*handle);
 
 	if (conf.itemExists("asset"))
                 dht11->setAssetName(conf.getValue("asset"));
